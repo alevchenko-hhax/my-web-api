@@ -32,7 +32,6 @@ jobs:
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
-          name: appVersions
-          path: appVersions/app.${{ steps.commit_hash.outputs.hash }}
+          name: appVersions/app.${{ steps.commit_hash.outputs.hash }}
 
     
