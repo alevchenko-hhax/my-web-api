@@ -31,7 +31,9 @@ jobs:
 
       - name: Create artifact
         uses: actions/upload-artifact@v2
+        run: echo app:${{ steps.commit_hash.outputs.hash }} > version.txt
         with:
           name: appVersions/app.${{ steps.commit_hash.outputs.hash }}
+          input: version.txt
 
     
