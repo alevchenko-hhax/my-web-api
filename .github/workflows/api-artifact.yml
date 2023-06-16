@@ -24,7 +24,7 @@ jobs:
         run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
 
       - name: Tag Docker image
-        run: docker tag app ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ steps.commit_hash.outputs.hash }}
+        run: docker tag app ${{ secrets.DOCKERHUB_USERNAME }}/app:app.${{ steps.commit_hash.outputs.hash }}
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ steps.commit_hash.outputs.hash }}
