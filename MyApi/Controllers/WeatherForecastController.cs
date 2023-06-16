@@ -31,7 +31,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(nameof(Hello))]
-    public IActionResult Hello()
+    public IActionResult Hello(){}
     {
         return Content("World");
     }
