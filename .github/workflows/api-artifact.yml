@@ -36,6 +36,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: appVersions/app.${{ steps.commit_hash.outputs.hash }}
-          input: version.txt
+          path: version.txt
 
     
