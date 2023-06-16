@@ -22,3 +22,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t app -f ./MyApi/Dockerfile .
+
+      - name: Get commit hash
+        id: commit_hash
+        run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+
+      - name: Tag Docker image
+        run: docker tag app your-dockerhub-username/app:${{ steps.commit_hash.outputs.hash }}
+
+      - name: Push Docker image
+        run: docker push your-dockerhub-username/app:${{ steps.commit_hash.outputs.hash }}
