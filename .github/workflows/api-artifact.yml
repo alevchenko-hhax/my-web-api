@@ -1,5 +1,4 @@
-name: Build Docker Image
-
+name: Merge to Main with artifact
 on:
   workflow_dispatch:
 
