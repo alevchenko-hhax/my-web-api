@@ -28,10 +28,12 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ steps.commit_hash.outputs.hash }}
+      
+      - name: Create file with version 
+        run: echo app:${{ steps.commit_hash.outputs.hash }} > version.txt
 
       - name: Create artifact
         uses: actions/upload-artifact@v2
-        run: echo app:${{ steps.commit_hash.outputs.hash }} > version.txt
         with:
           name: appVersions/app.${{ steps.commit_hash.outputs.hash }}
           input: version.txt
