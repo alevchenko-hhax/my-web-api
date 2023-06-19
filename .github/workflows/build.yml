@@ -1,4 +1,4 @@
-name: Merge to Main with artifact
+name: Merge to Main with git Tag
 on:
   workflow_dispatch:
 
@@ -28,14 +28,15 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/app:app-${{ steps.commit_hash.outputs.hash }}
-      
-      - name: Create file with version 
-        run: echo app:${{ steps.commit_hash.outputs.hash }} > version.txt
-
-      - name: Create artifact
-        uses: actions/upload-artifact@v2
+     
+      - name: Create tag
+        uses: actions/github-script@v5
         with:
-          name: app-${{ steps.commit_hash.outputs.hash }}
-          path: version.txt
-
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.commit_hash.outputs.hash }}',
+              sha: context.sha
+            })
     
