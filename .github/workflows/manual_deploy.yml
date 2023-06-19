@@ -1,4 +1,4 @@
-name: Deploy from Artifact
+name: manual deploy
 
 on:
   workflow_dispatch:
