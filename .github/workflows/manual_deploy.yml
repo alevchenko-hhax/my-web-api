@@ -8,9 +8,8 @@ on:
         required: true
         default: ''
       environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: ''
+        type: 'environment'
+        description: 'Select the environment'
 
 jobs:
   build:
