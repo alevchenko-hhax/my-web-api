@@ -3,8 +3,12 @@ name: Manual deploy
 on:
   workflow_dispatch:
     inputs:
-      artifact_name:
-        description: 'Artifact name to deploy  from Docker Hub'
+      git_tag:
+        description: 'Git tag for the Docker image'
+        required: true
+        default: ''
+      environment:
+        description: 'Environment to deploy to'
         required: true
         default: ''
 
@@ -21,6 +25,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Verify Git tag
+        run: |
+          if ! git rev-parse -q --verify "${{ github.event.inputs.git_tag }}"; then
+            echo "Invalid Git tag '${{ github.event.inputs.git_tag }}'"
+            exit 1
+          fi
       
       - name: Pull Docker image
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ github.event.inputs.artifact_name }}
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ github.event.inputs.git_tag }}
