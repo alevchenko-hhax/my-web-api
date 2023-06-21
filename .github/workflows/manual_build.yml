@@ -48,6 +48,6 @@ jobs:
           fetch-depth: 0
             
       - name: Read Git Tag
-        run: echo "Current Git tag is ${{ env.GITHUB_REF#refs/tags/ }}"
+        run: echo "Current Git tag is ${{github.ref_name}}"
         
     
