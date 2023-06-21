@@ -42,7 +42,11 @@ jobs:
               sha: context.sha
             })
         
-      - name: Read Git Tag
-        run: git fetch | git describe --tags --abbrev=0
+      - name: Read Last tag'
+        id: read_last_tag
+        run: |
+           git fetch
+           echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
         
     
