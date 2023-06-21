@@ -21,7 +21,7 @@ jobs:
 
       - name: Get commit hash
         id: commit_hash
-        run: echo "hash=(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Tag Docker image
         run: docker tag app ${{ secrets.DOCKERHUB_USERNAME }}/app:app-${{ steps.commit_hash.outputs.hash }}
