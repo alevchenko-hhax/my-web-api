@@ -51,5 +51,14 @@ jobs:
       -  name: Print last tag
          run: echo "Latest:tag ${{ steps.read_last_tag.outputs.tag }}"
 
-        
+      - name: Rettag last commit
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.read_last_tag.outputs.tag }}_new_tag',
+              sha: context.sha
+            })
     
