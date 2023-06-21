@@ -49,6 +49,6 @@ jobs:
             
       - name: Read Git Tag
         run: |
-         echo "Tag name from github.ref: ${{  github.ref }}"
+         echo "Tag name from github.ref: ${GITHUB_REF#refs/*/}"
         
     
