@@ -40,8 +40,12 @@ jobs:
               sha: context.sha
             })
             
-      - name: Set tag in variable and print it
-        id: set_tag
-        run: echo "::set-output name=tag::${{ steps.create_tag.outputs.response.data.ref }}"    
+      - name: Set tag in variable
+        id: created_tag
+        run: echo "tag=${{ steps.create_tag.outputs.response.data.ref }}" >> $GITHUB_OUTPUT 
+        
+      - name: Print new tag
+        id: print_tag
+        run: echo "${{ steps.created_tag.outputs.tag }}"
         
     
