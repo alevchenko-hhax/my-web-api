@@ -44,4 +44,4 @@ jobs:
         with:
             repository: ${{ env.ECR_REPOSITORY }}
             tag: ${{ env.IMAGE_TAG }}
-            new-tags: hello, world
+            new-tags: retagged
