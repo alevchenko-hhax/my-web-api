@@ -47,7 +47,7 @@ jobs:
           ECR_REPOSITORY: default
           IMAGE_TAG: hello
         run:  |
-         MANIFEST=$(aws ecr batch-get-image --repository-name  ${{ env.ECR_REPOSITORY }} --image-ids imageTag=${{ env.IMAGE_TAG }} --output json | jq --raw-output --join-output '.images[0].imageManifest') 
+          aws ecr batch-get-image --repository-name  ${{ env.ECR_REPOSITORY }} --image-ids imageTag=${{ env.IMAGE_TAG }} --output json | jq --raw-output --join-output '.images[0].imageManifest') 
           
       # - name: Read Last ECR  tag
       #   id: read_last_tag
