@@ -45,6 +45,7 @@ jobs:
       - name: Read Tag 
         env:
           ECR_REPOSITORY: default
+          IMAGE_TAG: hello
         run:  |
          MANIFEST=$(aws ecr batch-get-image --repository-name  ${{ env.ECR_REPOSITORY }} --image-ids imageTag=${{ env.IMAGE_TAG }} --output json | jq --raw-output --join-output '.images[0].imageManifest') 
           
