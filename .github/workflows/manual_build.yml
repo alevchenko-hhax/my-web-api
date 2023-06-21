@@ -48,7 +48,6 @@ jobs:
           fetch-depth: 0
             
       - name: Read Git Tag
-        run: |
-         echo "Tag name from github.ref: ${GITHUB_REF#refs/*/}"
+        run: git tag
         
     
