@@ -49,7 +49,7 @@ jobs:
            echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
            
       -  name: Print last tag
-         run: echo "Latest:tag ${{ steps.read_last_tag.tag }}"
+         run: echo "Latest:tag ${{ steps.read_last_tag.outputs.tag }}"
 
         
     
