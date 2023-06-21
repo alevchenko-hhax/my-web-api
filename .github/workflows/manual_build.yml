@@ -39,4 +39,8 @@ jobs:
               ref: 'refs/tags/${{ steps.commit_hash.outputs.hash }}',
               sha: context.sha
             })
+      - name: Set tag in variable and print it
+        id: set_tag
+        run: echo "::set-output name=tag::${{ steps.create_tag.outputs.response.data.ref }}"    
+        
     
