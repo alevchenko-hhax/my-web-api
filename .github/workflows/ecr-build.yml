@@ -44,11 +44,14 @@ jobs:
 
       - name: Retag image
         uses: abronin/ecr-retag-action@v1
+        env:
+          ECR_REPOSITORY: default
+          IMAGE_TAG: hello
         with:
-            repository: default
-            tag: hell
+            repository: ${{ env.ECR_REPOSITORY }}
+            tag: ${{ env.IMAGE_TAG }}
             new-tags: hello, world
-            
+
       # - name: Read Last ECR  tag
       #   id: read_last_tag
       #   env:
