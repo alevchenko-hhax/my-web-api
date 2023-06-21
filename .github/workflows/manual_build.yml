@@ -41,6 +41,11 @@ jobs:
               ref: 'refs/tags/${{ steps.commit_hash.outputs.hash }}',
               sha: context.sha
             })
+        
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
             
       - name: Read Git Tag
         run: echo "Current Git tag is ${{ env.GITHUB_REF }}"
