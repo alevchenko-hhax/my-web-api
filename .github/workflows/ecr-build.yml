@@ -44,6 +44,8 @@ jobs:
           
       - name: Read Last ECR  tag
         id: read_last_tag
+        env:
+          ECR_REPOSITORY: default
         run: |
              echo "tag=$(aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text
              )" >> $GITHUB_OUTPUT
