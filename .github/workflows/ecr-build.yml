@@ -39,6 +39,6 @@ jobs:
       - name: Retag 
         uses: abronin/ecr-retag-action@v1
         with:
-            repository: ${{ env.ECR_REGISTRY }}
+            repository: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REGISTRY }}
             tag: ${{ env.IMAGE_TAG }}
             new-tags: staging, production
