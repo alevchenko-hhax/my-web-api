@@ -23,12 +23,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Install AWS cli
-        id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-        with:
-          version: 2     
-
       - name: Build, tag, and push platform-identity Docker image to Amazon ECR
         uses: docker/build-push-action@v3
         env:
@@ -51,14 +45,3 @@ jobs:
             repository: ${{ env.ECR_REPOSITORY }}
             tag: ${{ env.IMAGE_TAG }}
             new-tags: hello, world
-
-      # - name: Read Last ECR  tag
-      #   id: read_last_tag
-      #   env:
-      #     ECR_REPOSITORY: default
-      #   run: |
-      #        echo "tag=$(aws ecr describe-images --repository-name ${{ env.ECR_REPOSITORY }} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text
-      #        )" >> $GITHUB_OUTPUT
-
-      # -  name: Print last tag
-      #    run: echo "Latest:tag ${{ steps.read_last_tag.outputs.tag }}"
