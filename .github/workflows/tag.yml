@@ -47,10 +47,8 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-       major=$(printf "%02d" ${{ env.GitVersion_Major }})
-       minor=$(printf "%02d" ${{ env.GitVersion_Minor }})
-       patch=$(printf "%02d" ${{ env.GitVersion_Patch }})
-       echo "plat=${{ major }}.${{ minor }}.${{ patch }}"
+        foo=$(printf "%02d" 5)
+        echo "${foo}"
 
           
     # - name: Create tag
