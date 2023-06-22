@@ -67,7 +67,9 @@ jobs:
       run: |
           if [ "${{ steps.checkTag.outputs.exists }}" = "true" ]; then
             echo "Tag already exists!"
-          exit 0
+            exit 0
+          else 
+           echo "Tag is missing. Continue executing..."
           fi
           
     - name: Create tag
