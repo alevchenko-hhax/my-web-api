@@ -67,15 +67,5 @@ jobs:
       uses: actions/github-script@v5
       with:
         script: |
-
-          if [ "${{ steps.checkTag.outputs.exists }}" = "true" ]; then
-              echo "Tag already exists!"
-              exit 0
-          fi
-              github.rest.git.createRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: 'refs/tags/${{ steps.jira.outputs.tag_name }}',
-                sha: context.sha
-              })
+              echo "${{ steps.checkTag.outputs.exists }}"
 
