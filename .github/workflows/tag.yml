@@ -40,20 +40,19 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-        $branch="${{ github.event.pull_request.head.ref }}"
-        if [[ $branch =~ PLAT-([0-9]+) ]]; then
-          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+        if [[ ${{ github.event.pull_request.head.ref }} =~ PLAT-([0-9]+) ]]; then
+          echo "${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}-PLAT-${BASH_REMATCH[1]}"
         else
-         echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}" >> $GITHUB_OUTPUT
+         echo "${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}"
         fi
           
-    - name: Create tag
-      uses: actions/github-script@v5
-      with:
-        script: |
-              github.rest.git.createRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: 'refs/tags/${{ steps.jira.outputs.plat }}',
-                sha: context.sha
-              })
+    # - name: Create tag
+    #   uses: actions/github-script@v5
+    #   with:
+    #     script: |
+    #           github.rest.git.createRef({
+    #             owner: context.repo.owner,
+    #             repo: context.repo.repo,
+    #             ref: 'refs/tags/${{ steps.jira.outputs.plat }}',
+    #             sha: context.sha
+    #           })
