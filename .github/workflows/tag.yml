@@ -48,7 +48,7 @@ jobs:
       id: jira
       run: |
            majorVersion = "${{ env.GitVersion_Major}}"
-           echo majorVersion
+           echo $majorVersion
 
 
         # if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
