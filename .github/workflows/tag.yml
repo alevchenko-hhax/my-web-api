@@ -40,7 +40,7 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-        if [[ ${{ github.event.pull_request.head.ref }} =~ PLAT-([0-9]+) ]]; then
+       if [[ -n "${{ github.event.pull_request.head.ref }}" &&  ${{ github.event.pull_request.head.ref }} =~ PLAT-([0-9]+) ]]; then
          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
         else
          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}" >> $GITHUB_OUTPUT
