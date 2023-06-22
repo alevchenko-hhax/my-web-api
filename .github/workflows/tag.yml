@@ -58,17 +58,20 @@ jobs:
         fi
           
     - name: Check Tag exists
-      run: |
-          git fetch --tags
-          if git rev-parse --verify --quiet ${{ steps.jira.outputs.tag_name }}; then
-            echo "Tag already exists.Finishing."
-            exit 0
-          fi
-            
+      uses: mukunku/tag-exists-action@v1.2.0
+      id: checkTag
+      with: 
+       tag: '${{ steps.jira.outputs.tag_name }}'
+        
     - name: Create tag
       uses: actions/github-script@v5
       with:
         script: |
+
+          if [ "${{ steps.checkTag.outputs.exists }}" = "true" ]; then
+              echo "Tag already exists!"
+              exit 0
+          fi
               github.rest.git.createRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
