@@ -64,7 +64,7 @@ jobs:
        tag: '${{ steps.jira.outputs.tag_name }}'
        
     - name: Create tag
-      if: ${{ steps.checkTag.outputs.exists }}'=='false'
+      if: steps.checkTag.outputs.exists ==false
       uses: actions/github-script@v5
       with:
           script: |
