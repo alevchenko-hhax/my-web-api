@@ -5,12 +5,12 @@ on:
     - 'main'
     - 'release/**'
 
-  # pull_request:
-  #   types:
-  #     - closed
-  #   branches:
-  #   - 'main'
-  #   - 'release/**'
+  pull_request:
+    types:
+      - closed
+    branches:
+    - 'main'
+    - 'release/**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -57,7 +57,13 @@ jobs:
           echo "tag_name=${current_ver}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}"  >> $GITHUB_OUTPUT
         fi
           
-        
+    - name: Check Tag exists
+      run: |
+          if git rev-parse --verify --quiet ${{ steps.jira.outputs.tag_name }}; then
+            echo "Tag already exists.Finishing."
+            exit 0
+          fi
+            
     - name: Create tag
       uses: actions/github-script@v5
       with:
