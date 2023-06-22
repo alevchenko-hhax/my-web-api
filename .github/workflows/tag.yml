@@ -47,7 +47,7 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-           majorVersion = ${{ env.GitVersion_Major}}
+           majorVersion = env.GitVersion_Major
            echo majorVersion
 
 
