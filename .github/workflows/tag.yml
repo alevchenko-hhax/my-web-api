@@ -1,16 +1,16 @@
 name: Build Image
 on:
-  # push:
-  #   branches:
-  #   - 'main'
-  #   - 'release/**'
-
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
     - 'main'
     - 'release/**'
+
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #   - 'main'
+  #   - 'release/**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -47,20 +47,22 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-        if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
-          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-        else
-          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}"  >> $GITHUB_OUTPUT
-        fi
+       echo $(printf "%03d" "env.GitVersion.Major")
+       
+        # if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
+        #   echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+        # else
+        #   echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}"  >> $GITHUB_OUTPUT
+        # fi
           
-    - name: Create tag
-      uses: actions/github-script@v5
-      with:
-        script: |
-              github.rest.git.createRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: 'refs/tags/${{ steps.jira.outputs.plat }}',
-                sha: context.sha
-              })
+    # - name: Create tag
+    #   uses: actions/github-script@v5
+    #   with:
+    #     script: |
+    #           github.rest.git.createRef({
+    #             owner: context.repo.owner,
+    #             repo: context.repo.repo,
+    #             ref: 'refs/tags/${{ steps.jira.outputs.plat }}',
+    #             sha: context.sha
+    #           })
 
