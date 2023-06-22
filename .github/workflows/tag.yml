@@ -46,7 +46,7 @@ jobs:
           else
             echo "::set-output name=plat::FALLBACK_VALUE"
           fi
-
+          
     - name: Create tag
       uses: actions/github-script@v5
       with:
