@@ -37,14 +37,14 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Extract Jira ticket and assign Tag variable
+    - name: Extract PLAT-<1..7 digits>
       id: jira
       run: |
-          pattern=$(echo "${{ github.event.pull_request.head.ref }}" | grep -o -E 'PLAT-\d{1,7}')
-          if [ -z "$pattern" ]; then
-            echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}" >> $GITHUB_ENV
+          extracted_value=$(echo "${{ github.event.pull_request.head.ref }}" | grep -o -E 'PLAT-\d{1,7}')
+          if [[ -n $extracted_value ]]; then
+            echo "::set-output name=plat::$extracted_value"
           else
-            echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}-{{ PLAT-$pattern }} " >> $GITHUB_ENV
+            echo "::set-output name=plat::FALLBACK_VALUE"
           fi
 
     - name: Create tag
