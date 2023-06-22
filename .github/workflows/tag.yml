@@ -49,7 +49,7 @@ jobs:
       run: |
         minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
         patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
-        echo "${${{env.GitVersion_Major}}}.${minor_ver}.${patch_ver}"
+        echo "${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
           
     # - name: Create tag
     #   uses: actions/github-script@v5
