@@ -37,15 +37,14 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Extract PLAT-<1..7 digits>
+    - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-          extracted_value=$(echo "${{ github.event.pull_request.head.ref }}" | grep -o -E 'PLAT-\d{1,7}')
-          if [[ -n $extracted_value ]]; then
-            echo "::set-output name=plat::$extracted_value"
-          else
-            echo "::set-output name=plat::FALLBACK_VALUE"
-          fi
+            if [[ ${{ github.event.pull_request.head.ref }} =~ ^PLAT-[0-9]+$ ]]; then
+              echo "plat=${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
+            else
+              echo "plat=23333" >> $GITHUB_OUTPUT
+            fi
           
     - name: Create tag
       uses: actions/github-script@v5
