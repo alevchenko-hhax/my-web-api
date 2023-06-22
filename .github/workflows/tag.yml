@@ -59,7 +59,7 @@ jobs:
           
     - name: Check Tag exists
       run: |
-          git fetch
+          git fetch --tags
           if git rev-parse --verify --quiet ${{ steps.jira.outputs.tag_name }}; then
             echo "Tag already exists.Finishing."
             exit 0
