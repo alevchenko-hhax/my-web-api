@@ -64,8 +64,6 @@ jobs:
        tag: '${{ steps.jira.outputs.tag_name }}'
         
     - name: Create tag
-      uses: actions/github-script@v5
-      with:
-        script: |
-              echo "${{ steps.checkTag.outputs.exists }}"
+      run: |
+          echo "${{ steps.checkTag.outputs.exists }}"
 
