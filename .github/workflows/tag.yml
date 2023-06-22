@@ -47,11 +47,15 @@ jobs:
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-        if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
-          echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-        else
-          echo "plat=${{ env.GitVersion_Major | sed 's/^/000/'}}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}"  >> $GITHUB_OUTPUT
-        fi
+           $majorVersion = ${{ env.GitVersion_Major | sed 's/^/000/'}}
+           echo $majorVersion
+
+
+        # if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
+        #   echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+        # else
+        #   echo "plat=${{ env.GitVersion_Major | sed 's/^/000/'}}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}"  >> $GITHUB_OUTPUT
+        # fi
           
     # - name: Create tag
     #   uses: actions/github-script@v5
