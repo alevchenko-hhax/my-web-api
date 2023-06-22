@@ -63,16 +63,9 @@ jobs:
       with: 
        tag: '${{ steps.jira.outputs.tag_name }}'
       
-    - name: Exit if tag already exists
-      run: |
-          if [ "${{ steps.checkTag.outputs.exists }}" = "true" ]; then
-            echo "Tag already exists!"
-            exit 0
-          else 
-           echo "Tag is missing. Continue executing..."
-          fi
-          
+       
     - name: Create tag
+      if: ${{ steps.checkTag.outputs.exists }}
       uses: actions/github-script@v5
       with:
           script: |
