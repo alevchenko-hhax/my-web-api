@@ -43,12 +43,12 @@ jobs:
         echo "${{ github.event.pull_request.head.ref }}"
       name: Use variables and output
 
-
+    
     - name: Extract Jira ticket and assign Tag variable
       id: jira
       run: |
-           majorVersion = "${{ env.GitVersion_Major}}"
-           echo $majorVersion
+
+       echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_CommitsSinceVersionSourcePadded }}" 
 
 
         # if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
