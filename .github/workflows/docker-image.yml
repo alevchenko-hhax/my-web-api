@@ -1,0 +1,59 @@
+name: Build Image
+on:
+  # push:
+  #   branches:
+  #   - 'main'
+  #   - 'release/**'
+
+  pull_request:
+    types:
+      - closed
+    branches:
+    - 'develop'
+    - 'release/**'
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0     
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      id: gitversion # step id used as reference for output values
+      uses: gittools/actions/gitversion/execute@v0
+      with:
+        useConfigFile: true
+
+    - name: Extract Jira ticket and assign Tag variable
+      id: jira
+      run: |
+          pattern=$(echo "${{ github.event.pull_request.head.ref }}" | grep -o -E 'PLAT-\d{1,7}')
+          if [ -z "$pattern" ]; then
+            echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}" >> $GITHUB_ENV
+          else
+            echo "plat=${{ env.GitVersion_MajorMinorPatch }}-${{ env.GitVersion_ShortSha }}-{{ PLAT-$pattern }} " >> $GITHUB_ENV
+          fi
+
+    - name: Create tag
+      uses: actions/github-script@v5
+      with:
+        script: |
+              github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/tags/${{ steps.jira.outputs.plat }}',
+                sha: context.sha
+              })
