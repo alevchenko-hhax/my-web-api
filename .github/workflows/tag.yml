@@ -28,9 +28,8 @@ jobs:
         
     - name: Extract tag name
       id: tag
-      uses: actions/github-script@0.2.0
+      uses: actions/github-script@v5
       with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             return context.payload.ref.replace(/\/refs\/tags\//, '');
 
