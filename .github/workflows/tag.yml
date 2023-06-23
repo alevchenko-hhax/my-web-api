@@ -36,7 +36,7 @@ jobs:
     - name: Check if commit has tags
       id: check_tags
       run: |
-        git fetch -all -tags
+        git fetch --all -tags
         git show-ref --tags
   
  
