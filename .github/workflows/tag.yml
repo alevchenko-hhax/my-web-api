@@ -30,7 +30,7 @@ jobs:
       id: check_tags
       run: |
           git fetch --all --tags
-          qw=git tag --points-at ${{ github.sha }})
+          qw=git tag --points-at ${{ github.sha }}
           echo "${qw}"
 
 
