@@ -26,15 +26,11 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Extract tag name
-      id: tag
-      uses: actions/github-script@v5
-      with:
-          script: |
-            return context.payload.ref.replace(/\/refs\/tags\//, '');
-
-    - name: Echo
-      run: echo ${{ steps.tag.outputs.result }}
+    - name: Check if commit has tags
+      id: check_tags
+      run: |
+          git fetch --all --tags
+          echo "$(git tag --points-at ${{ github.sha }})"
 
 
     - name: Install GitVersion
