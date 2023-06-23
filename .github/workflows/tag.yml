@@ -24,7 +24,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0     
+        fetch-depth: 0
+        
+    - name: HasAnyTags
+      run: |
+         has_tags=git describe --exact-match --tags HEAD >/dev/null 2>&1 && echo true || echo false
+         echo "${has_tags}"
+
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
