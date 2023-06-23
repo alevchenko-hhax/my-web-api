@@ -28,6 +28,7 @@ jobs:
         
     - name: HasAnyTags
       run: |
+         git fetch --all --tags
          has_tags=git describe --exact-match --tags HEAD >/dev/null 2>&1 && echo true || echo false
          echo "${has_tags}"
 
