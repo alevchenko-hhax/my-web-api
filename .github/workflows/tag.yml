@@ -28,9 +28,7 @@ jobs:
         
     - name: HasAnyTags
       run: |
-         git fetch --all --tags
-         has_tags=git describe --exact-match --tags HEAD
-         echo "${has_tags}"
+         echo "${{  github.ref_name }}"
 
 
     - name: Install GitVersion
