@@ -26,16 +26,18 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Check if commit has tags
-      id: check_tags
-      run: |
-          git tags
-
+    
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '5.x'
+
+    - name: Check if commit has tags
+      id: check_tags
+      run: |
+            git tags
+  
  
     - name: Determine Version
       id: gitversion # step id used as reference for output values
