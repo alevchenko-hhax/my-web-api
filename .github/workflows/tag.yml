@@ -37,10 +37,10 @@ jobs:
       id: check_tags
       run: |
         git fetch --all --tags
-        if [ -n "$(git tag --points-at HEAD)" ]; then
-           echo "Exists"
+        if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
+           echo "A tag exists on the current commit"
         else
-          echo "Not exists"
+          echo "No tags exist on the current commit"
         fi
  
     - name: Determine Version
