@@ -36,13 +36,12 @@ jobs:
     - name: Check if commit has tags
       id: check_tags
       run: |
-       git fetch --all --tags
-       if git tag --points-at HEAD >/dev/null 2>&1; then
-        echo "A tag exists on the current commit"
-       else
-        echo "No tags exist on the current commit"
-       fi
-  
+        git fetch --all --tags
+        if [ -n "$(git tag --points-at HEAD)" ]; then
+           echo "Exists"
+        else
+          echo "Not exists"
+        fi
  
     - name: Determine Version
       id: gitversion # step id used as reference for output values
