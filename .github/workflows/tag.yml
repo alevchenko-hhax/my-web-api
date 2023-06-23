@@ -74,4 +74,8 @@ jobs:
                     ref: 'refs/tags/${{ steps.jira.outputs.tag_name }}',
                     sha: context.sha
                   })
-           
+
+    - name: Echo
+      run: |
+           echo "hello world"
+                 
