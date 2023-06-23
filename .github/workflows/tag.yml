@@ -29,9 +29,7 @@ jobs:
     - name: Check if commit has tags
       id: check_tags
       run: |
-          git fetch --all --tags
-          qw=git tag --points-at ${{ github.sha }}
-          echo "${qw}"
+          git tags
 
 
     - name: Install GitVersion
