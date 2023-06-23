@@ -37,7 +37,11 @@ jobs:
       id: check_tags
       run: |
         git fetch --all --tags
-        git show-ref --tags
+        if git tag --contains HEAD; then
+          echo "Tag exists on the current commit"
+        else
+          echo "Tag does not exist on the current commit"
+        fi
   
  
     - name: Determine Version
