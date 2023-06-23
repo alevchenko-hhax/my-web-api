@@ -18,17 +18,8 @@ concurrency:
 
 jobs:
 
-  checker:
-     runs-on: ubuntu-latest
-     steps:
-      - name: Alerter
-        run: |
-           echo "hello"   
-
-
   build:
     runs-on: ubuntu-latest   
-    needs: checker 
     steps:
 
     - name: Checkout
@@ -40,6 +31,12 @@ jobs:
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '5.x'
+
+    - name: Check if commit has tags
+      id: check_tags
+      run: |
+          git fetch --all --tags
+          echo "$(git tag --points-at ${{ github.sha }})"
 
     - name: Determine Version
       id: gitversion # step id used as reference for output values
