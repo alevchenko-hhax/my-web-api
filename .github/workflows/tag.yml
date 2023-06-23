@@ -30,7 +30,8 @@ jobs:
       id: check_tags
       run: |
           git fetch --all --tags
-          echo "$(git tag --points-at ${{ github.sha }})"
+          qw=git tag --points-at ${{ github.sha }})
+          echo "${qw}"
 
 
     - name: Install GitVersion
