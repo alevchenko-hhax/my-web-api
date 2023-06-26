@@ -27,25 +27,24 @@ jobs:
         fetch-depth: 0
         
     
-
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '5.x'
 
     - name: Check if commit has tags
-      id: skip
+      id: commit
       run: |
-        git fetch --all --tags
-        if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
-          echo "::set-output name=tag_exists::true"
-        else
-          echo "::set-output name=tag_exists::false"
-        fi
+          git fetch --all --tags
+          if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
+            echo "has_tags=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_tags=false" >> $GITHUB_OUTPUT
+          fi
  
     - name: Determine Version
       id: gitversion # step id used as reference for output values
-      if: ${{ contains(steps.skip.outputs.tag_exists, 'false') }}
+      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
       uses: gittools/actions/gitversion/execute@v0
       with:
         useConfigFile: true
@@ -58,7 +57,7 @@ jobs:
 
     
     - name: Extract Jira ticket and assign Tag variable
-      if: ${{ contains(steps.skip.outputs.tag_exists, 'false') }}
+      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
       id: jira
       run: |
         minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
@@ -72,7 +71,7 @@ jobs:
         fi
           
     - name: Check Tag exists
-      if: ${{ contains(steps.skip.outputs.tag_exists, 'false') }}
+      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
       uses: mukunku/tag-exists-action@v1.2.0
       id: checkTag
       with: 
