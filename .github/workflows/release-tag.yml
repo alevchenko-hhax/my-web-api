@@ -6,9 +6,8 @@ on:
         description: 'Git tag for a new release'
         required: true
         default: ''
-permissions:
-  id-token: write
-  contents: write
+
+permissions: write-all
 
 jobs:
   build:
