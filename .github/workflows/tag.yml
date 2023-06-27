@@ -38,7 +38,7 @@ jobs:
           if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
             echo "has_tags=true" >> $GITHUB_OUTPUT
           else
-            echo "has_tags=false" >> $GITHUB_OUTPUT
+            echo "has_tags=false" >> $GITHUB_OUTPUT 
           fi
  
     - name: Determine Version
