@@ -1,11 +1,12 @@
 name: Build Image
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-    - 'main'
-    - 'release/**'
+  workflow_dispatch:
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #   - 'main'
+  #   - 'release/**'
 
   # push:
   #   branches:
@@ -25,71 +26,81 @@ jobs:
       with:
         fetch-depth: 0
         
-    
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0
-      with:
-        versionSpec: '5.x'
 
-    - name: Check if commit has tags
+    - name: Get current tag
       id: commit
       run: |
-          git fetch --all --tags
-          if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
-            echo "has_tags=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_tags=false" >> $GITHUB_OUTPUT 
-          fi
- 
-    - name: Determine Version
-      id: gitversion # step id used as reference for output values
-      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
-      uses: gittools/actions/gitversion/execute@v0
-      with:
-        useConfigFile: true
+         git fetch --all --tags
+         echo "GIT_TAG=`echo $(git describe --tags --abbrev=0 HEAD)`" >> $GITHUB_ENV
 
-    - run: |        
-        echo "${{ env.GitVersion_MajorMinorPatch }}"
-        echo "${{ env.GitVersion_ShortSha }}"
-        echo "${{ github.event.pull_request.head.ref }}"
-      name: Use variables and output
+    - name: Print current tag
+      run: |
+          echo "${{steps.commit.outputs.GIT_TAG }}"
+    
+    # - name: Install GitVersion
+    #   uses: gittools/actions/gitversion/setup@v0
+    #   with:
+    #     versionSpec: '5.x'
+
+    # - name: Check if commit has tags
+    #   id: commit
+    #   run: |
+    #       git fetch --all --tags
+    #       if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
+    #         echo "has_tags=true" >> $GITHUB_OUTPUT
+    #       else
+    #         echo "has_tags=false" >> $GITHUB_OUTPUT 
+    #       fi
+ 
+    # - name: Determine Version
+    #   id: gitversion # step id used as reference for output values
+    #   if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
+    #   uses: gittools/actions/gitversion/execute@v0
+    #   with:
+    #     useConfigFile: true
+
+    # - run: |        
+    #     echo "${{ env.GitVersion_MajorMinorPatch }}"
+    #     echo "${{ env.GitVersion_ShortSha }}"
+    #     echo "${{ github.event.pull_request.head.ref }}"
+    #   name: Use variables and output
 
     
-    - name: Extract Jira ticket and assign Tag variable
-      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
-      id: jira
-      run: |
-        minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
-        patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
-        current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
-        current_date=$(date +"%Y%m%d%H%M%S")
+    # - name: Extract Jira ticket and assign Tag variable
+    #   if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
+    #   id: jira
+    #   run: |
+    #     minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
+    #     patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
+    #     current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
+    #     current_date=$(date +"%Y%m%d%H%M%S")
 
-        if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
-          echo "tag_name=${current_ver}-${current_date}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-        else
-          echo "tag_name=${current_ver}-${current_date}"  >> $GITHUB_OUTPUT
-        fi
+    #     if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
+    #       echo "tag_name=${current_ver}-${current_date}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+    #     else
+    #       echo "tag_name=${current_ver}-${current_date}"  >> $GITHUB_OUTPUT
+    #     fi
           
-    - name: Check Tag exists
-      if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
-      uses: mukunku/tag-exists-action@v1.2.0
-      id: checkTag
-      with: 
-       tag: '${{ steps.jira.outputs.tag_name }}'
+    # - name: Check Tag exists
+    #   if: ${{ contains(steps.commit.outputs.has_tags, 'false') }}
+    #   uses: mukunku/tag-exists-action@v1.2.0
+    #   id: checkTag
+    #   with: 
+    #    tag: '${{ steps.jira.outputs.tag_name }}'
        
-    - name: Create tag
-      if: ${{ contains(steps.checkTag.outputs.exists, 'false') }}
-      uses: actions/github-script@v5
-      with:
-          script: |
-                  github.rest.git.createRef({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    ref: 'refs/tags/${{ steps.jira.outputs.tag_name }}',
-                    sha: context.sha
-                  })
+    # - name: Create tag
+    #   if: ${{ contains(steps.checkTag.outputs.exists, 'false') }}
+    #   uses: actions/github-script@v5
+    #   with:
+    #       script: |
+    #               github.rest.git.createRef({
+    #                 owner: context.repo.owner,
+    #                 repo: context.repo.repo,
+    #                 ref: 'refs/tags/${{ steps.jira.outputs.tag_name }}',
+    #                 sha: context.sha
+    #               })
 
-    - name: Echo
-      run: |
-           echo "hello worldf"
+    # - name: Echo
+    #   run: |
+    #        echo "hello worldf"
                  
