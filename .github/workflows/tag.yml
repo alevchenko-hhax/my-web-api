@@ -62,7 +62,7 @@ jobs:
         minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
         patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
         current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
-        current_date=date +"%m%Y%H%M"
+        current_date=$(date +"%m%Y%H%M")
 
         if [[ "${{ github.event.pull_request.head.ref }}" =~ PLAT-([0-9]+) ]]; then
           echo "tag_name=${current_ver}-${current_date}-PLAT-${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
