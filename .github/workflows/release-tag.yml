@@ -51,7 +51,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: 'refs/tags/${{steps.release.outputs.tag}}',
-            sha: ${{steps.release.outputs.hash}}
+            sha: '${{steps.release.outputs.hash}}'
           })
       
    
