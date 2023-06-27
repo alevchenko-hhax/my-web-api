@@ -1,0 +1,14 @@
+name: Deploy to devel
+on:
+  workflow_run:
+    workflows: ["tag.yml"]
+    types:
+      - completed
+  
+  jobs:
+  build:
+    runs-on: ubuntu-latest    
+    steps:
+
+    - name: echo
+      run: echo "123"
