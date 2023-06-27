@@ -18,11 +18,17 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Fetch all
+      run: |
+         git fetch --all --tags
+
     - name: Check Tag exists
       uses: mukunku/tag-exists-action@v1.2.0
       id: checkTag
       with: 
         tag: '${{inputs.git_tag }}'
+
+   
 
     - name: Exit if tag not found
       if: steps.checkTag.outputs.exists == 'false'
