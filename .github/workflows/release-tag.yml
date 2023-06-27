@@ -28,8 +28,14 @@ jobs:
       if: steps.checkTag.outputs.exists == 'false'
       run: exit 1
 
-    - name: Echo
-      run: echo 123
+    - name: Retag
+      run: |
+         version="${{inputs.git_tag}}"
+         release=$(echo $version | cut -d '-' -f 1)
+         echo $release
+         git tag $release $(git rev-list -n 1 ${{inputs.git_tag}})
+         git push origin --tags
+
 
 
   
