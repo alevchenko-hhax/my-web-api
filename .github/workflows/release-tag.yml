@@ -43,16 +43,24 @@ jobs:
          echo "hash=$( git rev-list -n 1 ${{inputs.git_tag}})" >> $GITHUB_OUTPUT
          echo "sha_short=$(git rev-parse --short $( git rev-list -n 1 ${{inputs.git_tag}}))" >> $GITHUB_OUTPUT
 
-    - name: Create release tag
-      uses: actions/github-script@v5
-      with:
-        script: |
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: 'refs/tags/${{steps.release.outputs.tag}}',
-            sha:${{steps.release.outputs.sha_short}}
-          })
+   
+    - name: Retag
+      run: |
+      
+        git tag ${{steps.release.outputs.tag}} $(git rev-list -n 1 ${{steps.release.outputs.hash}})
+        git push origin --tags
+
+    
+    # - name: Create release tag
+    #   uses: actions/github-script@v5
+    #   with:
+    #     script: |
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: 'refs/tags/${{steps.release.outputs.tag}}',
+    #         sha:${{steps.release.outputs.sha_short}}
+    #       })
 
   
     # - name: Tag commit
