@@ -13,13 +13,17 @@ on:
   #   - 'main'
   #   - 'release/**'
 
+env:
+  env_name: production-74910046
+   
+
 concurrency:
   group: ${{ github.workflow }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: develop    
+    environment: $env_name
     steps:
 
     - name: Checkout
@@ -37,7 +41,7 @@ jobs:
     - name: Print current tag
       run: |
           echo "${{steps.commit.outputs.GIT_TAG }}"
-          echo ${{github.environment }}
+          echo $env_name
     
     # - name: Install GitVersion
     #   uses: gittools/actions/gitversion/setup@v0
