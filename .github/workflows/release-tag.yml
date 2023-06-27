@@ -1,4 +1,4 @@
-name: Manual build
+name: Release tag
 on:
    push:
     branches:
