@@ -13,8 +13,6 @@ on:
   #   - 'main'
   #   - 'release/**'
 
-env:
-  env_name: production-74910046
    
 
 concurrency:
@@ -23,7 +21,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: $env_name
+    environment: frkkk
     steps:
 
     - name: Checkout
@@ -41,7 +39,7 @@ jobs:
     - name: Print current tag
       run: |
           echo "${{steps.commit.outputs.GIT_TAG }}"
-          echo ${{env.env_name}}
+          echo ${{env}}
     
     # - name: Install GitVersion
     #   uses: gittools/actions/gitversion/setup@v0
