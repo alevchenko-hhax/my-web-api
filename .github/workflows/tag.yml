@@ -31,7 +31,7 @@ jobs:
       id: commit
       run: |
          git fetch --all --tags
-         echo "GIT_TAG=`echo $(git describe --tags --abbrev=0 HEAD)`" >> $GITHUB_ENV
+         echo "GIT_TAG=$(git describe --tags --abbrev=0 HEAD)" >> $GITHUB_ENV
 
     - name: Print current tag
       run: |
