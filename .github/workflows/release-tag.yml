@@ -30,7 +30,11 @@ jobs:
             sha: context.sha
           })
 
-    - name: Retag
+    - name: Fetch all
       run: |
         git fetch --all --tags
+
+
+    - name: Retag
+      run: |
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
