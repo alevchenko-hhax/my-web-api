@@ -17,7 +17,7 @@ jobs:
         fetch-depth: 0
 
     - name: Echo tag
-      run: echo ${{github.sha}}
+      run: echo ${{github.run_number}}
     
     - name: Tag commit
       uses: actions/github-script@v5
@@ -26,6 +26,6 @@ jobs:
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: 'refs/tags/${{github.sha}}',
+            ref: 'refs/tags/${{github.run_number}}',
             sha: context.sha
           })
