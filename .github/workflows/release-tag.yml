@@ -44,12 +44,20 @@ jobs:
          echo "sha_short=$(git rev-parse --short $( git rev-list -n 1 ${{inputs.git_tag}}))" >> $GITHUB_OUTPUT
 
    
-    - name: Retag
-      run: |
-        git tag ${{steps.release.outputs.tag}} $(git rev-list -n 1 ${{steps.release.outputs.hash}})
-        git push origin ${{steps.release.outputs.tag}}
+    # - name: Retag
+    #   run: |
+    #     git tag ${{steps.release.outputs.tag}} $(git rev-list -n 1 ${{steps.release.outputs.hash}})
+    #     git push origin ${{steps.release.outputs.tag}}
 
     
+    - uses: rickstaa/action-create-tag@v1
+      id: "tag_create"
+      with:
+        tag: "${{steps.release.outputs.tag}}"
+        tag_exists_error: false
+        commit_sha: ${{steps.release.outputs.hash}}
+
+
     # - name: Create release tag
     #   uses: actions/github-script@v5
     #   with:
