@@ -46,9 +46,8 @@ jobs:
    
     - name: Retag
       run: |
-      
         git tag ${{steps.release.outputs.tag}} $(git rev-list -n 1 ${{steps.release.outputs.hash}})
-        git push origin --tags
+        git push origin ${{steps.release.outputs.tag}}
 
     
     # - name: Create release tag
