@@ -40,7 +40,7 @@ jobs:
     - name: Retag
       run: |
         version="${{steps.read_last_tag.outputs.tag}}"
-        release=$(echo $version | cut -d '-' -f 1)
+        release=$(printf "%s" "${version}" | cut -d '-' -f 1)
 
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
         git push origin --tags
