@@ -38,7 +38,9 @@ jobs:
       id: release
       run: |
          version="${{inputs.git_tag}}"
+
          echo "tag=$(echo $version | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
+         echo "hash=$( git rev-list -n 1 ${{inputs.git_tag}})" >> $GITHUB_OUTPUT
 
     - name: Create release tag
       uses: actions/github-script@v5
@@ -48,7 +50,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: 'refs/tags/${{steps.release.outputs.tag}}',
-            sha: git rev-list -n 1 ${{inputs.git_tag}}}
+            sha:${{steps.release.outputs.hash}}
           })
 
   
