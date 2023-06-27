@@ -34,15 +34,22 @@ jobs:
       if: steps.checkTag.outputs.exists == 'false'
       run: exit 1
 
-    - name: Retag
+    - name: Extract release
+      id: release
       run: |
          version="${{inputs.git_tag}}"
-         release=$(echo $version | cut -d '-' -f 1)
-         echo $release
-         git tag  $release $(git rev-list -n 1 ${{inputs.git_tag}})
-         git push origin --tags
+         echo "tag=$(echo $version | cut -d '-' -f 1)" >> $GITHUB_OUTPUT
 
-
+    - name: Create release tag
+      uses: actions/github-script@v5
+      with:
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/${{steps.release.outputs.tag}}',
+            sha: git rev-list -n 1 ${{inputs.git_tag}}}
+          })
 
   
     # - name: Tag commit
