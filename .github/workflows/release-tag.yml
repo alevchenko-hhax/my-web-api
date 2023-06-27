@@ -39,7 +39,7 @@ jobs:
 
     - name: Retag
       run: |
-        version="${{steps.read_last_tag.outputs.tag}}" | cut -d '-' -f 1
+        version="${{steps.read_last_tag.outputs.tag}}"
         release=$("${version}" | cut -d '-' -f 1)
 
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
