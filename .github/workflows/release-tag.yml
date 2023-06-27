@@ -25,7 +25,7 @@ jobs:
         tag: '${{inputs.git_tag }}'
 
     - name: Exit if tag not found
-      if: steps.checkTag.outputs.result == 'false'
+      if: steps.checkTag.outputs.exists == 'false'
       run: exit 1
 
     - name: Echo
