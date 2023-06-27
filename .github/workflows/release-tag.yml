@@ -32,4 +32,5 @@ jobs:
 
     - name: Retag
       run: |
+        git fetch --all --tags
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
