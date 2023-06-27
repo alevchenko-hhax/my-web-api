@@ -39,7 +39,7 @@ jobs:
          version="${{inputs.git_tag}}"
          release=$(echo $version | cut -d '-' -f 1)
          echo $release
-         git tag $(echo $release) $(git rev-list -n 1 ${{inputs.git_tag}})
+         git tag  $release $(git rev-list -n 1 ${{inputs.git_tag}})
          git push origin --tags
 
 
