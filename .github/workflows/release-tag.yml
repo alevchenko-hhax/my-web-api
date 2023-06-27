@@ -44,16 +44,28 @@ jobs:
          echo "hash=$( git rev-list -n 1 ${{inputs.git_tag}})" >> $GITHUB_OUTPUT
          echo "sha_short=$(git rev-parse --short $( git rev-list -n 1 ${{inputs.git_tag}}))" >> $GITHUB_OUTPUT
 
-    - name: Create release tag
-      uses: actions/github-script@v6
+
+         
+    - uses: rickstaa/action-create-tag@v1
+      id: "tag_create"
       with:
-        script: |
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: 'refs/tags/${{steps.release.outputs.tag}}',
-            sha: '${{steps.release.outputs.hash}}'
-          })
+        tag: "${{steps.release.outputs.tag}}"
+        tag_exists_error: false
+        commit_sha: ${{steps.release.outputs.hash}}
+
+
+
+      
+    # - name: Create release tag
+    #   uses: actions/github-script@v6
+    #   with:
+    #     script: |
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: 'refs/tags/${{steps.release.outputs.tag}}',
+    #         sha: '${{steps.release.outputs.hash}}'
+    #       })
       
    
     # - name: Retag
