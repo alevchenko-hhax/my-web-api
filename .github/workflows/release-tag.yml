@@ -40,7 +40,7 @@ jobs:
     - name: Retag
       run: |
        
-       echo ${{steps.read_last_tag.outputs.tag}}
+        echo "${{steps.read_last_tag.outputs.tag}}"
 
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
         git push origin --tags
