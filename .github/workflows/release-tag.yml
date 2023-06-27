@@ -29,3 +29,7 @@ jobs:
             ref: 'refs/tags/${{github.run_number}}',
             sha: context.sha
           })
+
+    - name: Retag
+      run: |
+        git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
