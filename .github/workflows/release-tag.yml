@@ -1,9 +1,11 @@
 name: Release tag
 on:
-   push:
-    branches:
-    - 'main'
-    - 'release/**'
+   workflow_dispatch:
+    inputs:
+      git_tag:
+        description: 'Git tag for a new release'
+        required: true
+        default: ''
 
 
 jobs:
@@ -16,32 +18,36 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Echo tag
-      run: echo ${{github.run_number}}
-    
-    - name: Tag commit
-      uses: actions/github-script@v5
-      with:
-        script: |
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: 'refs/tags/23.05.${{github.run_number}}-20230101-PLAT-1244',
-            sha: context.sha
-          })
+    - name: Check Tag exists
+      uses: mukunku/tag-exists-action@v1.2.0
+      id: checkTag
+      with: 
+        tag: '${{inputs.git_tag }}'
 
-    - name: Read Last tag
-      id: read_last_tag
-      run: |
-          git fetch --all --tags
-          echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+  
+    # - name: Tag commit
+    #   uses: actions/github-script@v5
+    #   with:
+    #     script: |
+    #       github.rest.git.createRef({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         ref: 'refs/tags/23.05.${{github.run_number}}-20230101-PLAT-1244',
+    #         sha: context.sha
+    #       })
+
+    # - name: Read Last tag
+    #   id: read_last_tag
+    #   run: |
+    #       git fetch --all --tags
+    #       echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
 
 
-    - name: Retag
-      run: |
-        version="${{steps.read_last_tag.outputs.tag}}"
-        release=$(echo $version | cut -d '-' -f 1)
-        echo $release
+    # - name: Retag
+    #   run: |
+    #     version="${{steps.read_last_tag.outputs.tag}}"
+    #     release=$(echo $version | cut -d '-' -f 1)
+    #     echo $release
 
-        git tag $release $(git rev-list -n 1 ${{steps.read_last_tag.outputs.tag}})
-        git push origin --tags
+    #     git tag $release $(git rev-list -n 1 ${{steps.read_last_tag.outputs.tag}})
+    #     git push origin --tags
