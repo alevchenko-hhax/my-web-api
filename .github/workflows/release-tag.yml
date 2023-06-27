@@ -38,4 +38,4 @@ jobs:
     - name: Retag
       run: |
         git tag x${{github.run_number}} $(git rev-list -n 1 ${{github.run_number}})
-        git push
+        git push origin --tags
