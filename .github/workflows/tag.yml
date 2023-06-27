@@ -7,10 +7,10 @@ on:
     - 'main'
     - 'release/**'
 
-  push:
-    branches:
-    - 'main'
-    - 'release/**'
+  # push:
+  #   branches:
+  #   - 'main'
+  #   - 'release/**'
 
 concurrency:
   group: ${{ github.workflow }}
