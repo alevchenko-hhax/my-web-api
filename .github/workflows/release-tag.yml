@@ -33,7 +33,7 @@ jobs:
     - name: Read Last tag
       id: read_last_tag
       run: |
-          git fetch
+          git fetch --all --tags
           echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
 
 
