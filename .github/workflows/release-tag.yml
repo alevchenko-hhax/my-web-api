@@ -24,6 +24,14 @@ jobs:
       with: 
         tag: '${{inputs.git_tag }}'
 
+    - name: Exit if tag not found
+      if: steps.checkTag.outputs.result == 'false'
+      run: exit 1
+
+    - name: Echo
+      run: echo 123
+
+
   
     # - name: Tag commit
     #   uses: actions/github-script@v5
