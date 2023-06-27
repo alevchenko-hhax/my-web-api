@@ -38,8 +38,7 @@ jobs:
 
     - name: Print current tag
       run: |
-          echo "${{steps.commit.outputs.GIT_TAG }}"
-          echo ${{env}}
+         env
     
     # - name: Install GitVersion
     #   uses: gittools/actions/gitversion/setup@v0
