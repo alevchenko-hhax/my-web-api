@@ -20,5 +20,15 @@ jobs:
       id: current
       run: echo "tag=123" >> $GITHUB_OUTPUT
 
-    - name: echo
-      run: echo ${{steps.current.outputs.tag}}
+    - name: Adjust tag
+      id: adjusted
+      run: |
+        tag="${{ steps.current.outputs.tag }}"
+        if [[ $tag != *-* ]] && [[ $tag != *rc* ]]; then
+          echo "::set-output name=adjusted_tag::${tag}-$(date +%Y%m%d%H%M%S)-rc"
+        else
+          echo "::set-output name=adjusted_tag::${tag}"
+        fi
+
+    - name: Echo
+      run: echo ${{ steps.adjusted.outputs.adjusted_tag }}
