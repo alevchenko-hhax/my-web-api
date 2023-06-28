@@ -33,6 +33,6 @@ jobs:
     - name: Echo
       run: |
         tag="${{ steps.current.outputs.tag }}"
-        res=$(echo $version | cut -d '-' -f 1)
+        res=$(echo $tag | cut -d '-' -f 1)
         
         echo $res
