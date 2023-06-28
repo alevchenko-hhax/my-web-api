@@ -29,7 +29,7 @@ jobs:
         useConfigFile: true      
 
     - name: Extract Jira ticket and assign Tag variable
-      id: jira
+      id: jira 
       run: |
         minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
         patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
