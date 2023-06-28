@@ -40,4 +40,4 @@ jobs:
         echo "result=$tmp"  >> $GITHUB_OUTPUT
 
     - name: Foo
-      run: "${{steps.pinger.outputs.result}}"
+      run: "echo ${{steps.pinger.outputs.result}}"
