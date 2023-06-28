@@ -16,5 +16,9 @@ jobs:
       with:
          fetch-depth: 0
 
+    - name: Declare tag
+      id: current
+      run: echo "tag=123" >> $GITHUB_OUTPUT
+
     - name: echo
-      run: echo 123
+      run: echo ${{steps.current.outputs.tag}}
