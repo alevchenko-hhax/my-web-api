@@ -6,6 +6,8 @@ ignore:
 merge-message-formats: {}
 assembly-versioning-scheme: MajorMinorPatch
 branches:
-  main:
+  branches:
+  Main:
+    mode: ContinuousDeployment
     increment: Major
 
