@@ -1,10 +1,10 @@
 next-version: 23.6.0
-mode: Increment
+assembly-versioning-scheme: MajorMinorPatch
 branches: {}
 ignore:
   sha: []
 merge-message-formats: {}
-assembly-versioning-scheme: MajorMinorPatch
+
 branches:
   branches:
   Main:
