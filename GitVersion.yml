@@ -1,12 +1,9 @@
 next-version: 23.6.0
+mode: ContinuousDeployment
 assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch
 ignore:
   sha: []
 merge-message-formats: {}
-
-branches:
-  branches:
-    Main:
-      mode: ContinuousDeployment
-      increment: Major
-
+increment: Inherit
+tag-prefix: '[vV]'
