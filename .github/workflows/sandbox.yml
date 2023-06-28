@@ -20,15 +20,15 @@ jobs:
       id: current
       run: echo "tag=123" >> $GITHUB_OUTPUT
 
-    - name: Adjust tag
-      id: adjusted
+    - name: Check if tag contains '-' or 'rc'
+      id: check
       run: |
         tag="${{ steps.current.outputs.tag }}"
-        if [[ $tag != *-* ]] && [[ $tag != *rc* ]]; then
-          echo "::set-output name=adjusted_tag::${tag}-$(date +%Y%m%d%H%M%S)-rc"
+        if [[ $tag == *-* || $tag == *[Rr][Cc]* ]]; then
+          echo "result=true"  >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=adjusted_tag::${tag}"
+          echo "result=false"  >> $GITHUB_OUTPUT
         fi
 
     - name: Echo
-      run: echo ${{ steps.adjusted.outputs.adjusted_tag }}
+      run: echo ${{ steps.check.outputs.result }}
