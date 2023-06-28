@@ -14,4 +14,4 @@ branches:
   main:
     increment: Patch
     track-merge-target: true
-    source-branches: []
+    source-branches: [] 
