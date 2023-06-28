@@ -18,4 +18,4 @@ commit-message-incrementing: Enabled
 ignore:
   sha: []
 merge-message-formats: {}
-update-build-number: true
+update-build-number: true 
