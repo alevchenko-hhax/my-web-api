@@ -1,4 +1,4 @@
-name: Build Image
+name: GitVersion
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, linux, x64, AWS-EKS-runner-non-prod] 
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     
     steps:
