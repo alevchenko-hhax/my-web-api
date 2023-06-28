@@ -36,7 +36,7 @@ jobs:
         tag="${{ steps.current.outputs.tag }}"
         res=$(echo $tag | cut -d '-' -f 1)
         res2=$(echo $tag | cut -d '-' -f 2)
-        tmp="${res}-${res2}-rc"
+        tmp=${res}-${res2}-rc
         echo "result=$tmp  >> $GITHUB_OUTPUT
 
     - name: Foo
