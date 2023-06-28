@@ -1,19 +1,10 @@
-mode: Mainline
-increment: None
-tag-prefix: '[vV]?'
-major-version-bump-message: '\+semver:\s*major'
-minor-version-bump-message: '\+semver:\s*minor'
-patch-version-bump-message: '\+semver:\s*patch'
-no-bump-message: '\+semver:\s*none'
-
-ignore:
-  commit-message: '.*'
-
-branches:
-  master:
-    regex: 'master'
-
+next-version: 23.6.0
+mode: ContinuousDeployment
+branches: {}
 ignore:
   sha: []
-
-assembly-versioning-scheme: MajorMinorPatchTag
+merge-message-formats: {}
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+commit-message-incrementing: Enabled
