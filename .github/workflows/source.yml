@@ -30,7 +30,7 @@ jobs:
 
     - name: Extract Jira ticket and assign Tag variable
       id: jira 
-      run: |
+      run: | 
         minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
         patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
         current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
