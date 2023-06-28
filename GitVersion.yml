@@ -1,9 +1,6 @@
 next-version: 1.0
-assembly-versioning-scheme: MajorMinorPatch
-assembly-file-versioning-scheme: MajorMinorPatch
-assembly-informational-format: '{InformationalVersion}'
 mode: Mainline
-tag-prefix: '[vV]'
+tag-prefix: ''
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
