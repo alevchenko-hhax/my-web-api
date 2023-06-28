@@ -11,6 +11,6 @@ ignore:
   sha: []
 merge-message-formats: {}
 branches:
- main:
+main:
   tag-prefix: ''
   mode: ContinuousDelivery
