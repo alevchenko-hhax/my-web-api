@@ -5,5 +5,5 @@ assembly-file-versioning-scheme: MajorMinorPatch
 ignore:
   sha: []
 merge-message-formats: {}
-increment: Inherit
+increment: Major
 tag-prefix: '[vV]'
