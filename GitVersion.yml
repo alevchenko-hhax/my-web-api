@@ -1,13 +1,12 @@
 next-version: 23.6.0
 assembly-versioning-scheme: MajorMinorPatch
-branches: {}
 ignore:
   sha: []
 merge-message-formats: {}
 
 branches:
   branches:
-  Main:
-    mode: ContinuousDeployment
-    increment: Major
+    Main:
+      mode: ContinuousDeployment
+      increment: Major
 
