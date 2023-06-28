@@ -6,4 +6,4 @@ assembly-file-versioning-format: '{Major}.{Minor}.{Patch}'
 ignore:
   sha: []
 merge-message-formats: {}
-tag-prefix: '[vV]' 
+tag-prefix: '[vV]'  
