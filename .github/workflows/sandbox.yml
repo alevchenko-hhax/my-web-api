@@ -31,4 +31,10 @@ jobs:
         fi
 
     - name: Echo
-      run: echo ${{ steps.check.outputs.result }}
+      run: |
+        tag="${{ steps.current.outputs.tag }}"
+        version=$(echo $tag | jq -r 'split("-")[0]')
+        timestamp=$(echo $tag | jq -r 'split("-")[1]')
+
+        echo $version
+        echo $timestamp
