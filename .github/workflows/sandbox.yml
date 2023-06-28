@@ -37,7 +37,7 @@ jobs:
         res=$(echo $tag | cut -d '-' -f 1)
         res2=$(echo $tag | cut -d '-' -f 2)
 
-        echo "result=$res-$res2-rc"  >> $GITHUB_OUTPUT
+        echo "result="${res}-${res2}-rc"  >> $GITHUB_OUTPUT
 
     - name: Foo
       run: ${{steps.pinger.outputs.result}}
