@@ -1,0 +1,56 @@
+name: Build Image
+on:
+  push:
+    branches:
+    - 'main'
+    - 'release/**'
+
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux, x64, AWS-EKS-runner-non-prod] 
+    timeout-minutes: 20
+    
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Setup .NET
+      id: dotnetinstall
+      uses: actions/setup-dotnet@v2
+      with:
+          dotnet-version: '6.0.x'
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      id: gitversion # step id used as reference for output values
+      uses: gittools/actions/gitversion/execute@v0
+      with:
+        useConfigFile: true
+
+    - name: Extract Jira ticket and assign Tag variable
+      id: jira
+      run: |
+        minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
+        patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
+        current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
+        current_date=$(date +"%Y%m%d%H%M%S")
+        echo "tag_name=${current_ver}-${current_date}"  >> $GITHUB_OUTPUT
+
+    - name: Create tag
+      uses: actions/github-script@v5
+      with:
+          script: |
+                  github.rest.git.createRef({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: 'refs/tags/${{ steps.jira.outputs.tag_name }}',
+                    sha: context.sha
+                  })
