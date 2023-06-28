@@ -6,5 +6,13 @@ assembly-file-versioning-format: '{Major}.{Minor}.{Patch}'
 ignore:
   sha: []
 merge-message-formats: {}
-increment: Major
 tag-prefix: '[vV]' 
+branches:
+  main:
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: true
+    pre-release-weight: 55000
