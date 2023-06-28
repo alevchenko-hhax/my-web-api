@@ -1,5 +1,5 @@
 next-version: 23.6.0
-mode: ContinuousDeployment
+mode: ContinuousDelivery
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-format: '{Major}.{Minor}.{Patch}'
@@ -7,12 +7,3 @@ ignore:
   sha: []
 merge-message-formats: {}
 tag-prefix: '[vV]' 
-branches:
-  main:
-    mode: ContinuousDelivery
-    tag: ''
-    increment: Patch
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: true
-    pre-release-weight: 55000 
