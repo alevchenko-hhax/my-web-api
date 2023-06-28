@@ -10,4 +10,7 @@ commit-message-incrementing: Enabled
 ignore:
   sha: []
 merge-message-formats: {}
-        
+branches:
+ main:
+  tag-prefix: ''
+  mode: ContinuousDelivery
