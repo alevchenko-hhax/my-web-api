@@ -1,11 +1,9 @@
-next-version: 23.6.0
-mode: ContinuousDeployment
+mode: Mainline
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+commit-message-incrementing: Enabled
 branches: {}
 ignore:
   sha: []
 merge-message-formats: {}
-commit-message-incrementing: Enabled
-tag-prefix: ''
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(fix|patch)'
