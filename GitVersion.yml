@@ -7,4 +7,4 @@ ignore:
   sha: []
 merge-message-formats: {}
 increment: Major
-tag-prefix: '[vV]'
+tag-prefix: '[vV]' 
