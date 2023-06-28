@@ -34,7 +34,7 @@ jobs:
       run: |
         tag="${{ steps.current.outputs.tag }}"
         res=$(echo $tag | cut -d '-' -f 1)
-        res2=$(echo $tag | cut -d '-' -f 1)
+        res2=$(echo $tag | cut -d '-' -f 2)
         
         echo $res
         echo $res2
