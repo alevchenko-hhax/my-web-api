@@ -5,5 +5,7 @@ ignore:
   sha: []
 merge-message-formats: {}
 assembly-versioning-scheme: MajorMinorPatch
-increment: Major
+branches:
+  main:
+    increment: Major
 
