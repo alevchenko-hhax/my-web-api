@@ -6,3 +6,6 @@ ignore:
 merge-message-formats: {}
 commit-message-incrementing: Disabled
 tag-prefix: ''
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
