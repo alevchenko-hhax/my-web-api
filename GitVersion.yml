@@ -11,6 +11,7 @@ ignore:
   sha: []
 merge-message-formats: {}
 branches:
-main:
-  tag-prefix: ''
-  mode: ContinuousDelivery
+  main:
+    increment: Patch
+    track-merge-target: true
+    source-branches: []
