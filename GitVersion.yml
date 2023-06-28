@@ -1,17 +1,10 @@
 next-version: 1.0
-mode: ContinuousDelivery
-tag-prefix: ''
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(fix|patch)'
-no-bump-message: '\+semver:\s?(none|skip)'
-
-commit-message-incrementing: Enabled
+mode: ContinuousDeployment
+branches: {}
 ignore:
   sha: []
 merge-message-formats: {}
-branches:
-  main:
-    increment: Patch
-    track-merge-target: true
-    source-branches: [] 
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+commit-message-incrementing: Enabled
