@@ -1,0 +1,22 @@
+name: New Release Workflow
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Extract release tag
+      id: extract_tag
+      run: echo "::set-output name=tag::${{ github.event.release.tag_name }}"
+
+    - name: Display release tag
+      run: |
+        echo ${{ steps.extract_tag.outputs.tag }}"
