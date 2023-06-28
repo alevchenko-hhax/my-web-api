@@ -1,5 +1,5 @@
 next-version: 23.6.0
-mode: ContinuousDeployment
+mode: Increment
 branches: {}
 ignore:
   sha: []
@@ -9,6 +9,3 @@ minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 commit-message-incrementing: Enabled
 assembly-versioning-scheme: MajorMinorPatch
-branches:
-  master:
-    tag: ''
