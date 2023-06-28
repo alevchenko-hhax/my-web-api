@@ -4,7 +4,7 @@ branches: {}
 ignore:
   sha: []
 merge-message-formats: {}
-commit-message-incrementing: Disabled
+commit-message-incrementing: Enabled
 tag-prefix: ''
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
