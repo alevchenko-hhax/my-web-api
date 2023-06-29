@@ -22,18 +22,54 @@ jobs:
         versionSpec: '6.x'
         includePrerelease: true
 
-    - name: Determine Version
-      id: gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v0
-      with:
-        useConfigFile: true      
-
+    - name: Get Version form tags and commits
+      id: version
+      uses: actions/github-script@v6
+      with:        
+          script: |
+            const branch = '${{ github.ref }}'.substring('refs/heads/'.length);
+            console.log(`Calculating version for branch ${branch}`);
+            const fs = require('fs');
+            const versionFilePath = './version.json';
+            let defaultVersion = '0.0.0';
+            if(fs.existsSync(versionFilePath)) {
+              const data = fs.readFileSync(versionFilePath, 'utf8');
+              const version = JSON.parse(data);
+              defaultVersion = version.defaultVersion;            
+            } else {
+              console.log(`'version.json' file with default version like { 'defaultVersion': '23.6.0' } does not exist`);
+            }
+            console.log(`Default version ${defaultVersion}`);          
+            // Pagination setup
+            let page = 0;
+            const per_page = 100;          
+            let last_page_reached = false;
+            const allCommits = [];
+            const commitsSet = new Set();            
+            // Fetch all commits with pagination
+            while(!last_page_reached) {
+              const commits = await github.rest.repos.listCommits({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  per_page: per_page,
+                  page: ++page,
+                  sha: branch
+              });
+              // If the result is less than requested, we've reached the last page
+              if(commits.data.length < per_page){
+                last_page_reached = true;
+              }
+              commits.data.forEach(commit => {
+                commitsSet.add(commit.sha);
+                allCommits.push([commit.sha, commit.commit.message]);
+              });
+  
+            
     - name: Extract Jira ticket and assign Tag variable
       id: jira 
       run: | 
-        minor_ver=$(printf "%02d" ${{env.GitVersion_Minor}})
-        patch_ver=$(printf "%02d" ${{env.GitVersion_Patch}})
-        current_ver="${{env.GitVersion_Major}}.${minor_ver}.${patch_ver}"
+      
+        current_ver="${{steps.version.outputs.result}}"
         current_date=$(date +"%Y%m%d%H\-%M%S")
         echo "tag_name=${current_ver}-${current_date}"  >> $GITHUB_OUTPUT
 
