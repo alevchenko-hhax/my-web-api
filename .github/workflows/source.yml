@@ -2,8 +2,7 @@ name: GitVersion
 on:
   push:
     branches:
-    - 'main'
-    - 'release/**'
+    - 'devel'
 
 jobs:
   build:
