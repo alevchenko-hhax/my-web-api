@@ -9,7 +9,7 @@ patch-version-bump-message: '\+semver:\s?(fix|patch)'
 commit-message-incrementing: Enabled 
 branches:
   develop:
-    regex: ^dev(elop)?(ment)?$
+    regex: ^dev(el)?(ment)?$
     mode: ContinuousDelivery
     tag: alpha
     increment: None
