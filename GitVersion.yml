@@ -1,5 +1,5 @@
 next-version: 2.5.5
-mode: Mainline
+mode: ContinuousDelivery
 ignore:
   sha: []
 merge-message-formats: {}
