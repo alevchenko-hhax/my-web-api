@@ -11,7 +11,6 @@ branches:
   develop:
     regex: ^dev(el)?(ment)?$
     mode: ContinuousDelivery
-    tag: alpha
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: true
@@ -23,7 +22,6 @@ branches:
   release:
     regex: ^releases?[/-]
     mode: ContinuousDelivery
-    tag: beta
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
@@ -35,7 +33,6 @@ branches:
   feature:
     regex: ^features?[/-]
     mode: ContinuousDelivery
-    tag: useBranchName
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
@@ -47,7 +44,6 @@ branches:
   hotfix:
     regex: ^hotfix(es)?[/-]
     mode: ContinuousDelivery
-    tag: beta
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
