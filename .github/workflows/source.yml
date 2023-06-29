@@ -20,6 +20,7 @@ jobs:
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '6.x'
+        includePrerelease: true
 
     - name: Determine Version
       id: gitversion # step id used as reference for output values
