@@ -27,42 +27,147 @@ jobs:
       uses: actions/github-script@v6
       with:        
           script: |
-            const branch = '${{ github.ref }}'.substring('refs/heads/'.length);
-            console.log(`Calculating version for branch ${branch}`);
-            const fs = require('fs');
-            const versionFilePath = './version.json';
-            let defaultVersion = '0.0.0';
-            if(fs.existsSync(versionFilePath)) {
-              const data = fs.readFileSync(versionFilePath, 'utf8');
-              const version = JSON.parse(data);
-              defaultVersion = version.defaultVersion;            
-            } else {
-              console.log(`'version.json' file with default version like { 'defaultVersion': '23.6.0' } does not exist`);
-            }
-            console.log(`Default version ${defaultVersion}`);          
-            // Pagination setup
-            let page = 0;
-            const per_page = 100;          
-            let last_page_reached = false;
-            const allCommits = [];
-            const commitsSet = new Set();            
-            // Fetch all commits with pagination
-            while(!last_page_reached) {
-              const commits = await github.rest.repos.listCommits({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  per_page: per_page,
-                  page: ++page,
-                  sha: branch
-              });
-              // If the result is less than requested, we've reached the last page
-              if(commits.data.length < per_page){
-                last_page_reached = true;
+              const branch = '${{ github.ref }}'.substring('refs/heads/'.length);
+              console.log(`Calculating version for branch ${branch}`);
+              const fs = require('fs');
+              const versionFilePath = './version.json';
+              let defaultVersion = '0.0.0';
+              if(fs.existsSync(versionFilePath)) {
+                const data = fs.readFileSync(versionFilePath, 'utf8');
+                const version = JSON.parse(data);
+                defaultVersion = version.defaultVersion;            
+              } else {
+                console.log(`'version.json' file with default version like { 'defaultVersion': '23.6.0' } does not exist`);
               }
-              commits.data.forEach(commit => {
-                commitsSet.add(commit.sha);
-                allCommits.push([commit.sha, commit.commit.message]);
+              console.log(`Default version ${defaultVersion}`);          
+              // Pagination setup
+              let page = 0;
+              const per_page = 100;          
+              let last_page_reached = false;
+              const allCommits = [];
+              const commitsSet = new Set();            
+              // Fetch all commits with pagination
+              while(!last_page_reached) {
+                const commits = await github.rest.repos.listCommits({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    per_page: per_page,
+                    page: ++page,
+                    sha: branch
+                });
+                // If the result is less than requested, we've reached the last page
+                if(commits.data.length < per_page){
+                  last_page_reached = true;
+                }
+                commits.data.forEach(commit => {
+                  commitsSet.add(commit.sha);
+                  allCommits.push([commit.sha, commit.commit.message]);
+                });
+
+              }
+              // Log the commits
+              // console.log(allCommits);
+              page = 0;
+              last_page_reached = false;
+              const allTags = [];
+              // Fetch all tags with pagination
+              while(!last_page_reached) {
+                const tags = await github.rest.repos.listTags({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    per_page: per_page,
+                    page: ++page
+                });
+                // If the result is less than requested, we've reached the last page
+                if(tags.data.length < per_page) {
+                  last_page_reached = true;
+                }
+                tags.data.forEach(tag => {
+                  if (commitsSet.has(tag.commit.sha)) {
+                    allTags.push([tag.name, tag.commit.sha]);
+                  }              
+                });            
+              }
+              console.log('Found tags to calculate version:');
+              console.log(allTags);
+              let maximumTagName = '';
+              let maximumTagHash = '';
+              allTags.forEach(tag => {
+                const tagName = tag[0];
+                const tagHash = tag[1];
+                if (tagName > maximumTagName) {
+                  maximumTagName = tagName;
+                  maximumTagHash = tagHash;
+                }
               });
+              console.log(`Maximum tag name ${maximumTagName}, hash ${maximumTagHash}`);
+              const commentsToProcess = [];
+              for (let i = 0; i < allCommits.length; i++) {
+                const commit = allCommits[i];            
+                const sha = commit[0];
+                const comment = commit[1];
+                if (maximumTagHash == sha) {
+                  break;
+                }
+                if (comment.includes('+semver:')) {
+                  commentsToProcess.push(comment);
+                }
+              }
+              if (commentsToProcess.length > 0) {
+                console.log('Found comments with +semver:');
+                console.log(commentsToProcess);
+              }
+              function parseVersion(version) {
+                // Extract the numeric part of the version string using a regular expression
+                const match = version.match(/\d+\.\d+\.\d+/);
+                // If no match is found, the version string is in an invalid format
+                if (!match) {
+                  return null;
+                }
+                // Split the numeric part into major, minor, and patch versions
+                const [major, minor, patch] = match[0].split('.');
+                // Return the versions as numbers
+                return [parseInt(major, 10), parseInt(minor, 10), parseInt(patch, 10)];
+              }
+              const [defaultMajor, defaultMinor, defaultPatch] = parseVersion(defaultVersion);
+              let major = defaultMajor;
+              let minor = defaultMinor;
+              let patch = defaultPatch;
+              if (maximumTagName) {
+                const parsedVersion = parseVersion(maximumTagName);
+                if (parsedVersion) {
+                  const [parsedMajor, parsedMinor, parsedPatch] = parsedVersion;
+                  major = parsedMajor;
+                  minor = parsedMinor;
+                  patch = parsedPatch;
+                }
+              }
+              console.log(`Base version: ${major}.${minor}.${patch}`);
+              if (commentsToProcess.length > 0) {
+                const reversedComments = commentsToProcess.reverse();
+                reversedComments.forEach(comment => {
+                  if (comment.match(/semver:\s?patch/)) {                
+                    patch += 1;
+                  }
+                  if (comment.match(/semver:\s?minor/)) {
+                    minor += 1;
+                    patch = 0;
+                  }
+                  if (comment.match(/semver:\s?major/)) {
+                    major += 1;
+                    minor = 0;
+                    patch = 0;
+                  }              
+                });            
+              }
+              function padZeros(input, size) {
+                var s = String(input);
+                while (s.length < (size || 2)) {s = "0" + s;}
+                return s;
+              }
+              const finalVersion = `${major}.${padZeros(minor, 2)}.${padZeros(patch, 2)}`;
+              console.log(`Final version: ${finalVersion}`);
+              return finalVersion;
   
             
     - name: Extract Jira ticket and assign Tag variable
